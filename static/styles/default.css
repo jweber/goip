@@ -26,7 +26,7 @@ footer a:hover {
 }
 
 #ip-address {
-	cursor: pointer;
+	font-size: 1.2em;
 }
 
 #actions {

@@ -18,7 +18,7 @@
         </header>
         <span id="ip-address">{{.RemoteAddress}}</span>
         <span id="actions">
-            <a href="javascript://" id="copy">[copy]</a>
+            <a href="javascript://" id="copy" title="Copy to clipboard">[copy]</a>
             <a href="http://whois.arin.net/rest/ip/{{.RemoteAddress}}.txt">[whois]</a>
         </span>
         <div id="whois-content">{{.Whois}}</div>
