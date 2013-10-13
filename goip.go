@@ -36,7 +36,7 @@ func negotiatingHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func htmlHandler(w http.ResponseWriter, r *http.Request) {
-	addr := r.RemoteAddr
+	addr := getIpAddress(r)
 	whoisBody := ""
 
 	p := &Page{RemoteAddress: addr, Whois: whoisBody}
@@ -46,8 +46,10 @@ func htmlHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func jsonHandler(w http.ResponseWriter, r *http.Request) {
+	addr := getIpAddress(r)
+
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, JsonResponse{"ip": r.RemoteAddr})
+	fmt.Fprint(w, JsonResponse{"ip": addr})
 	return
 }
 
@@ -57,9 +59,29 @@ func staticHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/static/", staticHandler)
-	http.HandleFunc("/", negotiatingHandler)
 	http.HandleFunc("/api", jsonHandler)
+	http.HandleFunc("/", negotiatingHandler)
 	http.ListenAndServe(":8080", nil)
+}
+
+func getIpAddress(r *http.Request) string {
+	addr := r.Header.Get("X-Real-IP")
+	if addr != "" {
+		return addr
+	}
+
+	addr = r.Header.Get("X-Forwarded-For")
+	if addr != "" {
+		return addr
+	}
+
+	addr = r.RemoteAddr
+	idx := strings.LastIndex(addr, ":")
+	if idx == -1 {
+		return addr
+	}
+
+	return addr[:idx]
 }
 
 func whois(ip string) string {
