@@ -7,6 +7,9 @@
         <meta name="Description" content="goip.org is an easy way to find your IP address." />
         <meta http-equiv="Pragma" content="no-cache" />
     
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="static/js/jquery.clipboard.js"></script>
+    
         <link rel="stylesheet" href="static/styles/default.css" />
     </head>
     <body>
@@ -14,13 +17,32 @@
             goip<span style="color: #999">.org</span>
         </header>
         <span id="ip-address">{{.RemoteAddress}}</span>
-        <span id="whois">
+        <span id="actions">
+            <a href="javascript://" id="copy">[copy]</a>
             <a href="http://whois.arin.net/rest/ip/{{.RemoteAddress}}.txt">[whois]</a>
         </span>
         <div id="whois-content">{{.Whois}}</div>
         <footer>
             <!--<span><a href="#">[source]</a></span>-->
         </footer>
+
+        <script>
+            $(function() {
+                $("#copy").clipboard({
+                    path: '/static/js/jquery.clipboard.swf',
+                    copy: $("#ip-address").text(),
+                    afterCopy: copied,
+                    clickAfter: false
+                });
+            });
+
+            function copied() {
+                $("#copy").html("[copied]");
+                setTimeout(function() {
+                    $("#copy").html("[copy]");
+                }, 1000);
+            }
+        </script>
 
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

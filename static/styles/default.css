@@ -26,15 +26,19 @@ footer a:hover {
 }
 
 #ip-address {
+	cursor: pointer;
 }
 
-#whois a {
+#actions {
+	margin-left: 10px;
+}
+
+#actions a {
 	color: #999;
-	padding-left: 10px;
 	font-size: .8em;
 	text-decoration: none;
 }
 
-#whois a:hover {
+#actions a:hover, #actions a.hover {
 	color: #666;
 }
