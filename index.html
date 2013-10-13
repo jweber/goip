@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+    <head>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <meta name="Keywords" content="ip, address, dhcp, network, find ip address, ip addres, ip find, ipaddress" />
+        <meta name="Description" content="goip.org is an easy way to find your IP address." />
+        <meta http-equiv="Pragma" content="no-cache" />
+    
+        <link rel="stylesheet" href="static/styles/default.css" />
+    </head>
+    <body>
+        <header>
+            goip<span style="color: #999">.org</span>
+        </header>
+        <span id="ip-address">{{.RemoteAddress}}</span>
+        <span id="whois">
+            <a href="http://whois.arin.net/rest/ip/{{.RemoteAddress}}.txt">[whois]</a>
+        </span>
+        <div id="whois-content">{{.Whois}}</div>
+        <footer>
+            <!--<span><a href="#">[source]</a></span>-->
+        </footer>
+    </body>
+</html>

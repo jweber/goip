@@ -1,0 +1,40 @@
+body {
+	font-family: 'Open Sans', sans-serif;
+	background-color: #f2f2f2;
+	margin: 20px;
+}
+
+header {
+	font-size: 2em;
+	position: absolute;
+	bottom: 20px;	
+}
+
+footer {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}
+
+footer a {
+	color: #999;
+	text-decoration: none;
+}
+
+footer a:hover {
+	color: #666;
+}
+
+#ip-address {
+}
+
+#whois a {
+	color: #999;
+	padding-left: 10px;
+	font-size: .8em;
+	text-decoration: none;
+}
+
+#whois a:hover {
+	color: #666;
+}
