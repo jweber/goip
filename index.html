@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <meta name="Keywords" content="ip, address, dhcp, network, find ip address, ip addres, ip find, ipaddress" />
+        <meta name="Keywords" content="ip, address, dhcp, network, find ip address, ip address, ip find, ipaddress" />
         <meta name="Description" content="goip.org is an easy way to find your IP address." />
         <meta http-equiv="Pragma" content="no-cache" />
     
@@ -18,10 +18,17 @@
             goip<span style="color: #999">.org</span>
         </header>
         <span id="ip-address">{{.RemoteAddress}}</span>
-        <span id="actions">
+        <span class="actions">
             <a href="javascript://" id="copy" title="Copy to clipboard">[copy]</a>
             <a href="http://whois.arin.net/rest/ip/{{.RemoteAddress}}.txt">[whois]</a>
         </span>
+        <div id="history" class="hidden">
+            <span id="history-title" title="Kept in your browsers local storage">ip history</span> 
+            <span class="actions">
+                <a href="javascript://" id="clear-history" title="Clear IP address history">[clear]</a>
+            </span>
+            <div id="history-content"></div>
+        </div>
         <div id="whois-content">{{.Whois}}</div>
         <footer>
             <span><a href="https://github.com/jweber/goip">[source]</a></span>
@@ -35,7 +42,17 @@
                     afterCopy: copied,
                     clickAfter: false
                 });
+
+                $("#clear-history").on("click", function() {
+                    clearHistory();
+                    printHistory();
+                });
+
+                rememberIp("{{.RemoteAddress}}");
+                printHistory();
             });
+
+            var localStorageKey = 'ipHistory';
 
             function copied() {
                 $("#copy").html("[copied]");
@@ -43,6 +60,71 @@
                     $("#copy").html("[copy]");
                 }, 1000);
             }
+
+            function rememberIp(address) {
+                var history = getHistory();
+
+                var existingElm = $.grep(history, function(elm) {
+                    return elm.address == address;
+                });
+
+                if (existingElm.length > 0)
+                    return;
+
+                history.unshift({address: address, date: getCurrentDate()});
+
+                saveHistory(history);
+            }
+
+            function printHistory() {
+                var history = getHistory();
+                if (history == null || history.length <= 1) {
+                    $("#history").addClass("hidden");
+                    $("#history-content").empty();
+                    return;
+                }
+
+                $.each(history, function(idx, elm) {
+
+                    console.log(elm);
+
+                    $("<div class='history-item' />")
+                        .append($("<span class='date' />").html(elm.date))
+                        .append($("<span class='address' />").html(elm.address))
+                        .appendTo($("#history-content"));
+                });
+
+                $("#history").removeClass("hidden");
+            }
+
+            function getHistory() {
+                var history = JSON.parse(localStorage.getItem(localStorageKey));
+                if (!history) {
+                    history = [];
+                }
+                
+                return history;                
+            }
+
+            function saveHistory(history) {
+                localStorage.setItem(localStorageKey, JSON.stringify(history));
+            }
+
+            function clearHistory() {
+                localStorage.setItem(localStorageKey, null);
+            }
+
+            function getCurrentDate() {
+                var currentDate = new Date();
+                var day = currentDate.getDate();
+                var month = currentDate.getMonth() + 1;
+                var year = currentDate.getFullYear();
+
+                return year + "-" 
+                     + ((month < 10) ? "0" + month : month) + "-" 
+                     + ((day < 10) ? "0" + day : day);
+            }
+
         </script>
 
         <script>

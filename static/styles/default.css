@@ -29,16 +29,47 @@ footer a:hover {
 	font-size: 1.2em;
 }
 
-#actions {
+#history {
+	margin-top: 40px;
+	padding-left: 6px;
+	border-radius: 4px;
+	border-left: solid 2px #ccc;
+}
+
+#history-title {
+	color: #333;
+	border-bottom: dotted 1px #999;
+	cursor: help;
+}
+
+#history-content {
+	margin-top: 8px;
+	font-size: .8em;
+}
+
+#history-content .date {
+	color: #999;
+	font-size: .8em;
+}
+
+#history-content .address {
+	margin-left: 8px;
+}
+
+.actions {
 	margin-left: 10px;
 }
 
-#actions a {
+.actions a {
 	color: #999;
 	font-size: .8em;
 	text-decoration: none;
 }
 
-#actions a:hover, #actions a.hover {
+.actions a:hover, #actions a.hover {
 	color: #666;
+}
+
+.hidden {
+	display: none;
 }
